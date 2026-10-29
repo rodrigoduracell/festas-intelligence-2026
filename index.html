@@ -33,7 +33,7 @@ function renderExtra(){
 }
 function renderSim(){const rows=exps(),cat=document.getElementById('simcat').value,cut=Number(document.getElementById('simcut').value),people=Number(document.getElementById('simpeople').value),m=sumCategories(rows,'v26'),saving=(m[cat]||0)*cut/100,budget=total(filtered(),'b26'),p=total(filtered(),'p26'),newP=p*(1+people/100);document.getElementById('simcutLabel').textContent=cut+'%';document.getElementById('simpeopleLabel').textContent=(people>0?'+':'')+people+'%';document.getElementById('simSaving').textContent=money(saving);document.getElementById('simPer').textContent=newP>0?money((budget-saving)/newP):'—';document.getElementById('simCompare').textContent='Referência: '+(p>0?money(budget/p):'sem participantes')+' / participante · orçamento informado'}
 for(const id of ['simcat','simcut','simpeople'])document.getElementById(id).addEventListener('input',renderSim);
-document.getElementById('unit').addEventListener('change',render);startApp();
+document.getElementById('unit').addEventListener('change',render);
 
 // CONFIGURE APENAS URL E CHAVE PUBLICA ANON DO PROJETO SUPABASE.
 const SUPABASE_URL = 'https://zvhouihxyvzampkuqpwn.supabase.co';
@@ -68,4 +68,4 @@ async function runWrite(operation,success){try{await operation();await refreshDa
 async function signOut(){document.getElementById('auditScreen').style.display='none';await client.auth.signOut()}
 async function openAudit(){if(!isAdmin)return;const {data,error}=await client.from('party_audit').select('created_at,actor_email,action,table_name,old_data,new_data').order('created_at',{ascending:false}).limit(1000);if(error)return show('Auditoria: '+error.message);
  document.getElementById('auditRows').innerHTML=(data||[]).map(x=>'<tr><td>'+new Date(x.created_at).toLocaleString('pt-BR')+'</td><td>'+escapeHTML(x.actor_email||'—')+'</td><td>'+escapeHTML(x.action)+'</td><td>'+escapeHTML(x.table_name)+'</td><td><pre style="max-width:280px;white-space:pre-wrap;font-size:11px">'+escapeHTML(JSON.stringify(x.old_data??null))+'</pre></td><td><pre style="max-width:280px;white-space:pre-wrap;font-size:11px">'+escapeHTML(JSON.stringify(x.new_data??null))+'</pre></td></tr>').join('');document.getElementById('auditScreen').style.display='block'}
-</script></body></html>
+startApp();</script></body></html>
